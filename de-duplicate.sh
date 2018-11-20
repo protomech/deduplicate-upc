@@ -1,13 +1,11 @@
 # sort all upcs, eliminate ones appearing only once, replace dos line endings with unix
-dups=`cat *.txt | sort -n | uniq -c | sort -n | grep -vE "^   1 " | cut -c 6- | tr -d '\015'`
+cat *.txt | sort -n | uniq -c | sort -n | grep -vE "^   1 " | cut -c 6- | tr -d '\015' > dups
+
 
 # print all upcs and offers containing
-for upc in $dups; do
-  # print upc
-  echo "$upc"
-  
-  # find offers containing upc
-  grep -l $upc *txt | sed -e 's/.txt//' 
+for file in *txt; do
+  echo "$file" | sed -e  's/.txt//'
+  grep -f dups $file
 
   # newline
   echo
